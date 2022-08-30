@@ -1,5 +1,6 @@
 package puzzleN.interfaceGraf;
 import javax.swing.*;
+import puzzleN.funcoes.*;
 import java.awt.event.*;
 import java.awt.*;
 
@@ -11,10 +12,11 @@ public class Menu extends JFrame implements ActionListener{
 	JButton ranking = new JButton("Ranking");
 	JButton sair = new JButton("Sair");
 	JPanel maior = new JPanel();
+	private Usuario player;
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==iniciar) {
-			TipoJogo tipoJogo = new TipoJogo(maior, this);
+			TipoJogo tipoJogo = new TipoJogo(maior, this, player);
 			setContentPane(tipoJogo);
 			tipoJogo.revalidate();
 		}else if(e.getSource()==sair) {
@@ -22,7 +24,8 @@ public class Menu extends JFrame implements ActionListener{
 		}
 	}
 	
-	public Menu(){
+	public Menu(Usuario player){
+		this.player = player;
 		setTitle("Menu");
 		setSize(500,430);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

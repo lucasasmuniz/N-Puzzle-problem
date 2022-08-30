@@ -6,7 +6,13 @@ public class Usuario {
 	private int tamanho;
 	
 	public void setNome(String nome){
-		this.nome = nome;
+		if(nome.isEmpty()) {
+			this.nome = "Indefinido";
+		}else if(nome.length()>12) {
+			this.nome = nome.substring(0,12);
+		}else {
+			this.nome = nome;
+		}
 	}
 	public String getNome() {
 		return this.nome;
@@ -19,5 +25,4 @@ public class Usuario {
 	public int getTamanho() {
 		return this.tamanho;
 	}
-
 }

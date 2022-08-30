@@ -4,12 +4,12 @@ import javax.swing.border.*;
 import java.awt.event.*;
 import java.awt.*;
 import puzzleN.*;
-import puzzleN.funcoes.Dados;
+import puzzleN.funcoes.*;
 
-public class GUIJogo extends JFrame implements ActionListener{
+public class GUIJogo extends JFrame{
 	
-	private int tamanho = 4;//3 ou 4(quando tiver dificuldade será setado lá)
-	private int[] quad;//POSICAO DOS BOTOES
+	private int tamanho = 3;//3 ou 4(quando tiver dificuldade será setado lá)
+	private int[] numerosRandom;//POSICAO DOS BOTOES
 	private int[][] resposta;
 	private int numBranco;//POSICAO DO BOTAO EM BRANCO
 	private int numQuad;//QUANTIDADE DE BOTOES - 1
@@ -27,11 +27,11 @@ public class GUIJogo extends JFrame implements ActionListener{
 	public GUIJogo(String jogador){
 		
 		this.numQuad = (tamanho*tamanho)-1;
-		this.quad= new int[tamanho*tamanho]; 
+		this.numerosRandom= new int[tamanho*tamanho]; 
 		this.resposta = new int[tamanho][tamanho];
 		
-		Dados dadosPlayer = new Dados(tamanho);
-		quad = dadosPlayer.random(this.tamanho);
+		Dados dadosPlayer = new Dados();
+		numerosRandom = dadosPlayer.random(this.tamanho);
 		this.resposta = dadosPlayer.gabarito(this.tamanho);
 		
 		setTitle("Puzzle-N");
@@ -39,7 +39,7 @@ public class GUIJogo extends JFrame implements ActionListener{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
-		setResizable(true);
+		setResizable(false);
 		setVisible(true);
 		parteCima(jogador, 0);
 		parteMeio();
@@ -66,6 +66,8 @@ public class GUIJogo extends JFrame implements ActionListener{
 		sul.setPreferredSize(new Dimension(700,100));
 		sul.setBackground(fundo);
 		sul.add(reset);
+		//BotaoAjuda botaoAjuda = new BotaoAjuda(this, resposta, tamanho, ajuda);
+		//ajuda.addActionListener(botaoAjuda);
 		sul.add(ajuda);
 		add(sul,BorderLayout.SOUTH);
 	}
@@ -76,22 +78,23 @@ public class GUIJogo extends JFrame implements ActionListener{
 		meio.setBorder(new EmptyBorder(10,10,0,10));
 		this.botoes = new JButton[tamanho][tamanho];
 		int k = 0;
+		MovJogo controles = new MovJogo(this.tamanho,this.botoes,this.resposta);
 		for(int i = 0; i<botoes.length; i++) {
 			for(int j = 0; j<botoes[i].length ;j++) {
-				if(String.valueOf(quad[k]).equals("-1")) {
+				if(String.valueOf(numerosRandom[k]).equals("-1")) {
 					botoes[i][j] = new JButton();
 					botoes[i][j].setBackground(fundo);
-					botoes[i][j].addActionListener(this);
+					botoes[i][j].addActionListener(controles);
 					botoes[i][j].setFont(botaoBranco);
-					botoes[i][j].setText(String.valueOf(quad[k]));
+					botoes[i][j].setText(String.valueOf(numerosRandom[k]));
 					meio.add(botoes[i][j]);
 				} else {
 					botoes[i][j] = new JButton();
-					botoes[i][j].addActionListener(this);
+					botoes[i][j].addActionListener(controles);
 					botoes[i][j].setBackground(new Color(84,37,131));
 					botoes[i][j].setFont(fonteBotao);
 					botoes[i][j].setForeground(Color.white);
-					botoes[i][j].setText(String.valueOf(quad[k]));
+					botoes[i][j].setText(String.valueOf(numerosRandom[k]));
 					if(String.valueOf(resposta[i][j]).equals(botoes[i][j].getText())) {
 						botoes[i][j].setBackground(new Color(153,50,204));
 					}
@@ -101,58 +104,5 @@ public class GUIJogo extends JFrame implements ActionListener{
 			}
 		}
 		add(meio);
-	}
-	
-	public void actionPerformed(ActionEvent e) {
-		for(int i = 0; i<botoes.length ;i++) {
-			for(int j = 0; j<botoes[i].length ;j++) {
-				if(e.getSource()==botoes[i][j]) {
-					if(i+1<tamanho && botoes[i+1][j].getText().equals("-1")) {
-						botoes[i+1][j].setBackground(new Color(84,37,131));
-						botoes[i+1][j].setFont(fonteBotao);
-						botoes[i+1][j].setForeground(Color.white);
-						botoes[i+1][j].setText(botoes[i][j].getText()); 
-						botoes[i][j].setBackground(fundo);
-						botoes[i][j].setFont(botaoBranco);
-						botoes[i][j].setText("-1");
-					}else if(i-1>=0 && botoes[i-1][j].getText().equals("-1")) {
-						botoes[i-1][j].setBackground(new Color(84,37,131));
-						botoes[i-1][j].setFont(fonteBotao);
-						botoes[i-1][j].setForeground(Color.white);
-						botoes[i-1][j].setText(botoes[i][j].getText());
-						botoes[i][j].setBackground(fundo);
-						botoes[i][j].setFont(botaoBranco);
-						botoes[i][j].setText("-1");
-					}else if(j+1<tamanho && botoes[i][j+1].getText().equals("-1")){
-						botoes[i][j+1].setBackground(new Color(84,37,131));
-						botoes[i][j+1].setFont(fonteBotao);
-						botoes[i][j+1].setForeground(Color.white);
-						botoes[i][j+1].setText(botoes[i][j].getText());
-						botoes[i][j].setBackground(fundo);
-						botoes[i][j].setFont(botaoBranco);
-						botoes[i][j].setText("-1");
-					}else if(j-1>=0 && botoes[i][j-1].getText().equals("-1")) {
-						botoes[i][j-1].setBackground(new Color(84,37,131));
-						botoes[i][j-1].setFont(fonteBotao);
-						botoes[i][j-1].setForeground(Color.white);
-						botoes[i][j-1].setText(botoes[i][j].getText());
-						botoes[i][j].setBackground(fundo);
-						botoes[i][j].setFont(botaoBranco);
-						botoes[i][j].setText("-1");
-					}
-				}
-			}
-		}
-		for(int i=0; i<botoes.length ;i++) {
-			for(int j=0; j<botoes[i].length ; j++) {
-				if(String.valueOf(resposta[i][j]).equals(botoes[i][j].getText())) {
-					if(botoes[i][j].getText().equals("-1")) {
-						continue;
-					}else {
-						botoes[i][j].setBackground(new Color(153,50,204));
-					}
-				}
-			}
-		}
 	}
 }

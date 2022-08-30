@@ -3,14 +3,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Dados { //Essa classe depois herdará de usuarios
-	private int tamanho;
-	private int[] quad;
-	private int numQuad;
-	private int[] resposta;
-	
-	public Dados(int tamanho) {
-		this.tamanho = tamanho;
-	}
 	
 	public int[][] gabarito(int tamanho) {
 		int[][] array = new int[tamanho][tamanho];

@@ -14,17 +14,15 @@ public class TipoJogo extends JPanel implements ActionListener{
 	JButton imagem = new JButton("Imagem");
 	JButton voltar = new JButton("Voltar");
 
-	private String nickname;
+	private Usuario player;
 	private JPanel painelMenu;
 	private JFrame abaMenu;
 	
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==numero) {
-			this.nickname = JOptionPane.showInputDialog("Qual seu nome?");
-			Usuario player = new Usuario();
-			player.setNome(this.nickname);
-			GUIJogo numeroJogo = new GUIJogo(this.nickname);
+			this.player.setNome(JOptionPane.showInputDialog("Qual seu nome?"));
+			GUIJogo numeroJogo = new GUIJogo(this.player.getNome());
 			setVisible(false);
 		}else if(e.getSource()==voltar) {
 			abaMenu.setContentPane(painelMenu);
@@ -32,9 +30,10 @@ public class TipoJogo extends JPanel implements ActionListener{
 		}
 	}
 	
-	public TipoJogo(JPanel painelMenu, JFrame frameMenu) {
+	public TipoJogo(JPanel painelMenu, JFrame frameMenu, Usuario player) {
 		this.painelMenu = painelMenu;
 		this.abaMenu = frameMenu;
+		this.player = player;
 		setSize(500,430);
 		setLayout(new BorderLayout());
 		setVisible(true);
