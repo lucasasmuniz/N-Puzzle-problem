@@ -1,12 +1,12 @@
 package puzzleN;
 
+import puzzleN.funcoes.Dados;
+import puzzleN.funcoes.Usuario;
+import puzzleN.interfaceGraf.*;
+
 public class JogoMain {
 	
 	public static void main(String[] args) {
-		Usuario usuario1 = new Usuario();
-		usuario1.setName("Lucas");
-		Dados dados1 = new Dados();
-		dados1.setTamanho(3);
-		dados1.embaralhar();
+		Menu novoJogo = new Menu(); //Não sei porque, mas algumas vezes o JFrame buga e tem que rodar o menu novamente para aparecer algo
 	}
 }
